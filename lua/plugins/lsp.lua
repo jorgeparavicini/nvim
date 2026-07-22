@@ -19,7 +19,7 @@ return {
         map("gr", vim.lsp.buf.references, "Go to references")
         map("<leader>rn", vim.lsp.buf.rename, "Rename symbol")
         map("<leader>ca", vim.lsp.buf.code_action, "Code action")
-        map("<leader>e", vim.diagnostic.open_float, "Line diagnostics")
+        map("<leader>cd", vim.diagnostic.open_float, "Line diagnostics")
       end,
     })
 
