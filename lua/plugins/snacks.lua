@@ -26,21 +26,21 @@ return {
       function()
         Snacks.picker.grep()
       end,
-      desc = "Live Grep",
+      desc = "Grep in Project",
     },
     {
       "<leader>fb",
       function()
         Snacks.picker.buffers()
       end,
-      desc = "Buffers",
+      desc = "Open Buffers",
     },
     {
       "<leader><space>",
       function()
         Snacks.picker.smart()
       end,
-      desc = "Smart Picker",
+      desc = "Smart Find",
     },
   },
 }
