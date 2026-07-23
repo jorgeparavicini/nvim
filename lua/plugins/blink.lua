@@ -6,7 +6,7 @@ return {
     keymap = { preset = "default" },
     appearance = { nerd_font_variant = "mono" },
     sources = {
-      default = { "lsp", "path", "snippets", "buffer" },
+      default = { "lsp", "path", "snippets", "buffer", "lazydev" },
       providers = {
         lazydev = {
           name = "LazyDev",

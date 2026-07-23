@@ -4,7 +4,7 @@ return {
   lazy = false,
   opts = {
     explorer = { enabled = true },
-    picker = { enabled = true, sources = { explorer = { auto_close = false } } },
+    picker = { enabled = true, ui_select = true, sources = { explorer = { auto_close = false } } },
   },
   keys = {
     {
