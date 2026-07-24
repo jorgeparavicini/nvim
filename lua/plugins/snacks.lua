@@ -15,6 +15,7 @@ return {
     statuscolumn = { enabled = true },
     scroll = { enabled = true },
     dashboard = { enabled = true },
+    terminal = { enabled = true },
   },
   keys = {
     {
@@ -51,6 +52,44 @@ return {
         Snacks.picker.smart()
       end,
       desc = "Smart Find",
+    },
+
+    -- Terminal
+    {
+      "<c-/>",
+      function()
+        Snacks.terminal.toggle()
+      end,
+      desc = "Terminal",
+      mode = { "n", "t" },
+    },
+    {
+      "<leader>tt",
+      function()
+        Snacks.terminal.toggle()
+      end,
+      desc = "Terminal",
+    },
+    {
+      "<leader>trr",
+      function()
+        Snacks.terminal.toggle(vim.g.cargo_run_cmd or "cargo run", { win = { position = "bottom", height = 0.35 } })
+      end,
+      desc = "cargo run",
+    },
+    {
+      "<leader>trt",
+      function()
+        Snacks.terminal.toggle("cargo test", { win = { position = "bottom", height = 0.35 } })
+      end,
+      desc = "cargo test",
+    },
+    {
+      "<leader>trc",
+      function()
+        Snacks.terminal.toggle("cargo check", { win = { position = "bottom", height = 0.35 } })
+      end,
+      desc = "cargo check",
     },
   },
 }

@@ -6,6 +6,8 @@ return {
       { "<leader>f", group = "Find" },
       { "<leader>c", group = "Code" },
       { "<leader>g", group = "Goto", mode = { "n", "x" } },
+      { "<leader>t", group = "Terminal" },
+      { "<leader>tr", group = "Rust" },
     },
   },
 }
