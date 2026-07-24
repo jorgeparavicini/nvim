@@ -5,6 +5,16 @@ return {
   opts = {
     explorer = { enabled = true },
     picker = { enabled = true, ui_select = true, sources = { explorer = { auto_close = false } } },
+    bigfile = { enabled = true },
+    quickfile = { enabled = true },
+    indent = { enabled = true },
+    scope = { enabled = true },
+    words = { enabled = true },
+    notifier = { enabled = true },
+    input = { enabled = true },
+    statuscolumn = { enabled = true },
+    scroll = { enabled = true },
+    dashboard = { enabled = true },
   },
   keys = {
     {

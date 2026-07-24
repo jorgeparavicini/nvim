@@ -15,9 +15,13 @@ return {
         local map = function(keys, fn, desc)
           vim.keymap.set("n", keys, fn, { buffer = event.buf, desc = "LSP: " .. desc })
         end
-        map("gd", vim.lsp.buf.definition, "Go to definition")
-        map("gr", vim.lsp.buf.references, "Go to references")
-        map("<leader>rn", vim.lsp.buf.rename, "Rename symbol")
+        map("gd", function()
+          Snacks.picker.lsp_definitions()
+        end, "Go to definition")
+        map("gr", function()
+          Snacks.picker.lsp_references()
+        end, "Go to references")
+        map("<leader>cr", vim.lsp.buf.rename, "Rename symbol")
         map("<leader>ca", vim.lsp.buf.code_action, "Code action")
         map("<leader>cd", vim.diagnostic.open_float, "Line diagnostics")
       end,
