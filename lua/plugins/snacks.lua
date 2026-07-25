@@ -71,21 +71,21 @@ return {
       desc = "Terminal",
     },
     {
-      "<leader>trr",
+      "<leader>rcr",
       function()
         Snacks.terminal.toggle(vim.g.cargo_run_cmd or "cargo run", { win = { position = "bottom", height = 0.35 } })
       end,
       desc = "cargo run",
     },
     {
-      "<leader>trt",
+      "<leader>rct",
       function()
         Snacks.terminal.toggle("cargo test", { win = { position = "bottom", height = 0.35 } })
       end,
       desc = "cargo test",
     },
     {
-      "<leader>trc",
+      "<leader>rcc",
       function()
         Snacks.terminal.toggle("cargo check", { win = { position = "bottom", height = 0.35 } })
       end,

@@ -24,3 +24,4 @@ vim.o.inccommand = "split"
 vim.o.list = true
 vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
 vim.o.exrc = true
+vim.o.winborder = "rounded" -- rounded border on all floating windows

@@ -5,9 +5,11 @@ return {
     spec = {
       { "<leader>f", group = "Find" },
       { "<leader>c", group = "Code" },
-      { "<leader>g", group = "Goto", mode = { "n", "x" } },
+      { "<leader>x", group = "Diagnostics" },
+      { "<leader>r", group = "Rust" },
+      { "<leader>rc", group = "Cargo" },
       { "<leader>t", group = "Terminal" },
-      { "<leader>tr", group = "Rust" },
+      { "<leader>g", group = "Git" },
     },
   },
 }
