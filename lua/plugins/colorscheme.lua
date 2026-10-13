@@ -17,6 +17,8 @@ return {
     },
     integrations = {
       blink_cmp = { style = "bordered" },
+      dap = true,
+      dap_ui = true,
       flash = true,
       gitsigns = true,
       lsp_trouble = true,
