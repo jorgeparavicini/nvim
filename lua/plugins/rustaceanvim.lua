@@ -5,53 +5,13 @@
 -- indexing a large workspace. Commands that need the server tell you so.
 --
 --   <leader>r   rust-analyzer actions (runnables, debug, macros, docs, ...)
---   <leader>rc  cargo commands in a terminal
 --   <leader>t   tests via neotest (see neotest.lua)
 --   Cargo.toml  crates.nvim keys under <leader>r (see crates.lua)
-
-local function cargo_term(cmd)
-  return function()
-    Snacks.terminal.toggle(cmd, { win = { position = "bottom", height = 0.35 }, interactive = false })
-  end
-end
 
 return {
   "mrcjkb/rustaceanvim",
   version = "^9",
   lazy = false,
-  keys = {
-    { "<leader>rcr", cargo_term(vim.g.cargo_run_cmd or "cargo run"), desc = "cargo run" },
-    { "<leader>rct", cargo_term("cargo test"), desc = "cargo test" },
-    { "<leader>rcc", cargo_term("cargo check"), desc = "cargo check" },
-    { "<leader>rcb", cargo_term("cargo build"), desc = "cargo build" },
-    { "<leader>rcB", cargo_term("cargo build --release"), desc = "cargo build --release" },
-    { "<leader>rcl", cargo_term("cargo clippy --all-targets"), desc = "cargo clippy" },
-    { "<leader>rcd", cargo_term("cargo doc --open"), desc = "cargo doc --open" },
-    { "<leader>rcu", cargo_term("cargo update"), desc = "cargo update" },
-    { "<leader>rcC", cargo_term("cargo clean"), desc = "cargo clean" },
-    {
-      "<leader>rca",
-      function()
-        Snacks.input({ prompt = "cargo add" }, function(crate)
-          if crate and crate ~= "" then
-            cargo_term("cargo add " .. crate)()
-          end
-        end)
-      end,
-      desc = "cargo add <crate>",
-    },
-    {
-      "<leader>rcx",
-      function()
-        Snacks.input({ prompt = "cargo" }, function(args)
-          if args and args ~= "" then
-            cargo_term("cargo " .. args)()
-          end
-        end)
-      end,
-      desc = "cargo <anything>",
-    },
-  },
   init = function()
     vim.g.rustaceanvim = {
       tools = {

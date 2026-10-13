@@ -13,7 +13,6 @@ return {
       { "<leader>gh", group = "Hunks" },
       { "<leader>q", group = "Quit" },
       { "<leader>r", group = "Rust / Cargo" },
-      { "<leader>rc", group = "Cargo" },
       { "<leader>s", group = "Search" },
       { "<leader>t", group = "Test" },
       { "<leader>u", group = "UI toggles" },
