@@ -3,7 +3,7 @@ return {
   event = "VeryLazy",
   opts = {
     options = {
-      theme = "catppuccin",
+      theme = "catppuccin-nvim",
       globalstatus = true,
       component_separators = { left = "\u{E0B1}", right = "\u{E0B3}" },
       section_separators = { left = "\u{E0B4}", right = "\u{E0B6}" },
