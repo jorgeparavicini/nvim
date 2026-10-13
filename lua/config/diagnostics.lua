@@ -1,9 +1,9 @@
--- Diagnostic display. Virtual text by default; <leader>uv switches to
--- virtual lines (full-width message under the cursor line).
+-- Diagnostic display. Virtual lines (full-width message under the cursor
+-- line) by default; <leader>uv switches to inline virtual text for the session.
 
 vim.diagnostic.config({
-  virtual_text = { prefix = "●", source = "if_many", spacing = 2 },
-  virtual_lines = false,
+  virtual_text = false,
+  virtual_lines = { current_line = true },
   severity_sort = true,
   underline = true,
   update_in_insert = false,
