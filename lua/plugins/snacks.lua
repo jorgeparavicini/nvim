@@ -423,25 +423,18 @@ return {
       mode = { "n", "t" },
     },
     {
-      "<leader>tt",
+      "<leader>ft",
       function()
         Snacks.terminal.toggle()
       end,
-      desc = "Toggle terminal",
+      desc = "Terminal (bottom)",
     },
     {
-      "<leader>tf",
+      "<leader>fT",
       function()
         Snacks.terminal.toggle(nil, { win = { position = "float" } })
       end,
-      desc = "Floating terminal",
-    },
-    {
-      "<leader>tv",
-      function()
-        Snacks.terminal.toggle(nil, { win = { position = "right", width = 0.4 } })
-      end,
-      desc = "Vertical terminal",
+      desc = "Terminal (float)",
     },
 
     -- Word references (LSP document highlight)

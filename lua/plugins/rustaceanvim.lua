@@ -1,110 +1,163 @@
 -- Rust: rust-analyzer via rustaceanvim (not mason-lspconfig).
--- Rust keys live under <leader>r, cargo terminals under <leader>rc.
+--
+-- Keymaps are registered on FileType rust, not on LSP attach, so <leader>r
+-- is populated the moment a .rs file opens even while rust-analyzer is still
+-- indexing a large workspace. Commands that need the server tell you so.
+--
+--   <leader>r   rust-analyzer actions (runnables, debug, macros, docs, ...)
+--   <leader>rc  cargo commands in a terminal
+--   <leader>t   tests via neotest (see neotest.lua)
+--   Cargo.toml  crates.nvim keys under <leader>r (see crates.lua)
+
+local function cargo_term(cmd)
+  return function()
+    Snacks.terminal.toggle(cmd, { win = { position = "bottom", height = 0.35 }, interactive = false })
+  end
+end
 
 return {
   "mrcjkb/rustaceanvim",
   version = "^9",
   lazy = false,
   keys = {
+    { "<leader>rcr", cargo_term(vim.g.cargo_run_cmd or "cargo run"), desc = "cargo run" },
+    { "<leader>rct", cargo_term("cargo test"), desc = "cargo test" },
+    { "<leader>rcc", cargo_term("cargo check"), desc = "cargo check" },
+    { "<leader>rcb", cargo_term("cargo build"), desc = "cargo build" },
+    { "<leader>rcB", cargo_term("cargo build --release"), desc = "cargo build --release" },
+    { "<leader>rcl", cargo_term("cargo clippy --all-targets"), desc = "cargo clippy" },
+    { "<leader>rcd", cargo_term("cargo doc --open"), desc = "cargo doc --open" },
+    { "<leader>rcu", cargo_term("cargo update"), desc = "cargo update" },
+    { "<leader>rcC", cargo_term("cargo clean"), desc = "cargo clean" },
     {
-      "<leader>rcr",
+      "<leader>rca",
       function()
-        Snacks.terminal.toggle(vim.g.cargo_run_cmd or "cargo run", { win = { position = "bottom", height = 0.35 } })
+        Snacks.input({ prompt = "cargo add" }, function(crate)
+          if crate and crate ~= "" then
+            cargo_term("cargo add " .. crate)()
+          end
+        end)
       end,
-      desc = "cargo run",
+      desc = "cargo add <crate>",
     },
     {
-      "<leader>rct",
+      "<leader>rcx",
       function()
-        Snacks.terminal.toggle("cargo test", { win = { position = "bottom", height = 0.35 } })
+        Snacks.input({ prompt = "cargo" }, function(args)
+          if args and args ~= "" then
+            cargo_term("cargo " .. args)()
+          end
+        end)
       end,
-      desc = "cargo test",
-    },
-    {
-      "<leader>rcc",
-      function()
-        Snacks.terminal.toggle("cargo check", { win = { position = "bottom", height = 0.35 } })
-      end,
-      desc = "cargo check",
-    },
-    {
-      "<leader>rcb",
-      function()
-        Snacks.terminal.toggle("cargo build", { win = { position = "bottom", height = 0.35 } })
-      end,
-      desc = "cargo build",
-    },
-    {
-      "<leader>rcl",
-      function()
-        Snacks.terminal.toggle("cargo clippy", { win = { position = "bottom", height = 0.35 } })
-      end,
-      desc = "cargo clippy",
+      desc = "cargo <anything>",
     },
   },
   init = function()
     vim.g.rustaceanvim = {
+      tools = {
+        -- Run tests through neotest so results show inline (see neotest.lua).
+        test_executor = "neotest",
+        crate_test_executor = "neotest",
+        float_win_config = { border = "rounded" },
+      },
       server = {
-        on_attach = function(_, bufnr)
-          local map = function(keys, fn, desc, mode)
-            vim.keymap.set(mode or "n", keys, fn, { buffer = bufnr, desc = desc })
-          end
-          -- Grouped code actions (better than vim.lsp.buf.code_action for Rust).
-          map("<leader>ca", function()
-            vim.cmd.RustLsp("codeAction")
-          end, "Code action", { "n", "x" })
-          map("K", function()
-            vim.cmd.RustLsp({ "hover", "actions" })
-          end, "Hover actions")
-
-          map("<leader>rr", function()
-            vim.cmd.RustLsp("runnables")
-          end, "Runnables")
-          map("<leader>rt", function()
-            vim.cmd.RustLsp("testables")
-          end, "Testables")
-          map("<leader>rd", function()
-            vim.cmd.RustLsp("renderDiagnostic")
-          end, "Render diagnostic")
-          map("<leader>re", function()
-            vim.cmd.RustLsp("explainError")
-          end, "Explain error")
-          map("<leader>rm", function()
-            vim.cmd.RustLsp("expandMacro")
-          end, "Expand macro")
-          map("<leader>ro", function()
-            vim.cmd.RustLsp("openCargo")
-          end, "Open Cargo.toml")
-          map("<leader>rO", function()
-            vim.cmd.RustLsp("openDocs")
-          end, "Open docs.rs")
-          map("<leader>rD", function()
-            vim.cmd.RustLsp("debuggables")
-          end, "Debuggables (start debugger)")
-          map("<leader>rp", function()
-            vim.cmd.RustLsp("parentModule")
-          end, "Parent module")
-          map("<leader>rj", function()
-            vim.cmd.RustLsp("joinLines")
-          end, "Join lines")
-          map("<leader>rs", function()
-            vim.cmd.RustLsp("ssr")
-          end, "Structural search replace")
-          map("<leader>rR", function()
-            vim.cmd.RustLsp("relatedDiagnostics")
-          end, "Related diagnostics")
-        end,
         default_settings = {
           ["rust-analyzer"] = {
-            cargo = { allFeatures = true },
-            check = { command = "clippy" },
-            inlayHints = {
-              lifetimeElisionHints = { enable = "skip_trivial" },
-              closureReturnTypeHints = { enable = "always" },
+            cargo = {
+              allFeatures = true,
+              loadOutDirsFromCheck = true,
+              buildScripts = { enable = true },
             },
+            checkOnSave = true,
+            check = { command = "clippy", extraArgs = { "--no-deps" } },
+            procMacro = {
+              enable = true,
+              ignored = {
+                ["async-trait"] = { "async_trait" },
+                ["napi-derive"] = { "napi" },
+                ["async-recursion"] = { "async_recursion" },
+              },
+            },
+            files = { excludeDirs = { ".direnv", ".git", "target" } },
+            inlayHints = {
+              bindingModeHints = { enable = false },
+              chainingHints = { enable = true },
+              closingBraceHints = { enable = true, minLines = 25 },
+              closureReturnTypeHints = { enable = "always" },
+              lifetimeElisionHints = { enable = "skip_trivial", useParameterNames = true },
+              parameterHints = { enable = true },
+              typeHints = { enable = true },
+            },
+            lens = { enable = true, references = { adt = { enable = true }, method = { enable = true } } },
           },
         },
       },
     }
+
+    vim.api.nvim_create_autocmd("FileType", {
+      group = vim.api.nvim_create_augroup("jorge_rust_keys", { clear = true }),
+      pattern = "rust",
+      callback = function(ev)
+        local function rust(cmd, desc, mode)
+          vim.keymap.set(mode or "n", cmd[1], function()
+            vim.cmd.RustLsp(cmd[2])
+          end, { buffer = ev.buf, desc = desc })
+        end
+
+        -- Overrides of generic LSP keys with the Rust-aware versions.
+        rust({ "<leader>ca", "codeAction" }, "Code action (grouped)", { "n", "x" })
+        rust({ "K", { "hover", "actions" } }, "Hover + actions")
+        rust({ "<leader>K", { "hover", "range" } }, "Hover range", { "x" })
+
+        -- Run / debug / test
+        rust({ "<leader>rr", "runnables" }, "Runnables (pick & run)")
+        rust({ "<leader>rR", { "runnables", "last" } }, "Rerun last runnable")
+        rust({ "<leader>rD", "debuggables" }, "Debuggables (pick & debug)")
+        rust({ "<leader>rL", { "debuggables", "last" } }, "Redebug last debuggable")
+        rust({ "<leader>rt", "testables" }, "Testables (pick & test)")
+
+        -- Diagnostics / errors
+        rust({ "<leader>re", "explainError" }, "Explain error (rustc --explain)")
+        rust({ "<leader>rd", "renderDiagnostic" }, "Render diagnostic (cargo style)")
+        rust({ "<leader>rE", "relatedDiagnostics" }, "Related diagnostics")
+        rust({ "<leader>rf", { "flyCheck", "run" } }, "Fly check (cargo check now)")
+        rust({ "<leader>rF", { "flyCheck", "clear" } }, "Clear fly check diagnostics")
+
+        -- Code
+        rust({ "<leader>rm", "expandMacro" }, "Expand macro (recursive)")
+        rust({ "<leader>rM", "rebuildProcMacros" }, "Rebuild proc macros")
+        rust({ "<leader>rj", "joinLines" }, "Join lines (Rust-aware)")
+        rust({ "<leader>rs", "ssr" }, "Structural search & replace")
+        rust({ "<leader>rk", { "moveItem", "up" } }, "Move item up")
+        rust({ "<leader>rJ", { "moveItem", "down" } }, "Move item down")
+
+        -- Navigation
+        rust({ "<leader>ro", "openCargo" }, "Open Cargo.toml")
+        rust({ "<leader>rO", "openDocs" }, "Open docs.rs for symbol")
+        rust({ "<leader>rp", "parentModule" }, "Go to parent module")
+        rust({ "<leader>rw", "workspaceSymbol" }, "Workspace symbols (rust-analyzer)")
+
+        -- Inspect
+        rust({ "<leader>rg", { "crateGraph", "svg" } }, "Crate graph (svg)")
+        rust({ "<leader>rS", "syntaxTree" }, "View syntax tree")
+        rust({ "<leader>rh", { "view", "hir" } }, "View HIR")
+        rust({ "<leader>ri", { "view", "mir" } }, "View MIR")
+        rust({ "<leader>rl", "logFile" }, "Open rust-analyzer log")
+
+        -- Server control
+        vim.keymap.set(
+          "n",
+          "<leader>rx",
+          "<cmd>RustAnalyzer restart<cr>",
+          { buffer = ev.buf, desc = "Restart rust-analyzer" }
+        )
+        vim.keymap.set(
+          "n",
+          "<leader>rX",
+          "<cmd>RustAnalyzer reloadSettings<cr>",
+          { buffer = ev.buf, desc = "Reload rust-analyzer settings" }
+        )
+      end,
+    })
   end,
 }

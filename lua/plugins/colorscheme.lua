@@ -24,6 +24,7 @@ return {
       lsp_trouble = true,
       mason = true,
       mini = { enabled = true, indentscope_color = "" },
+      neotest = true,
       noice = true,
       notify = true,
       snacks = { enabled = true, indent_scope_color = "" },

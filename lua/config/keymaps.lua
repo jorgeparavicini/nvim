@@ -4,9 +4,10 @@
 -- the same prefixes, and which-key.lua names every group.
 --
 --   <leader>b  Buffer        <leader>q  Quit
---   <leader>c  Code / LSP    <leader>r  Rust       (<leader>rc Cargo)
+--   <leader>c  Code / LSP    <leader>r  Rust       (<leader>rc Cargo, crates in Cargo.toml)
+--   <leader>d  Debug
 --   <leader>f  Find files    <leader>s  Search     (grep, symbols, help, ...)
---   <leader>g  Git           <leader>t  Terminal
+--   <leader>g  Git           <leader>t  Test       (terminal: <c-/>, <leader>ft)
 --   <leader>gh Git hunks     <leader>u  UI toggles
 --   <leader>w  Window        <leader>x  Diagnostics / lists
 --
