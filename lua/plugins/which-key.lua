@@ -2,14 +2,36 @@ return {
   "folke/which-key.nvim",
   event = "VeryLazy",
   opts = {
+    preset = "helix",
+    delay = 300,
     spec = {
-      { "<leader>f", group = "Find" },
+      { "<leader>b", group = "Buffer" },
       { "<leader>c", group = "Code" },
-      { "<leader>x", group = "Diagnostics" },
+      { "<leader>f", group = "Find" },
+      { "<leader>g", group = "Git" },
+      { "<leader>gh", group = "Hunks" },
+      { "<leader>q", group = "Quit" },
       { "<leader>r", group = "Rust" },
       { "<leader>rc", group = "Cargo" },
+      { "<leader>s", group = "Search" },
       { "<leader>t", group = "Terminal" },
-      { "<leader>g", group = "Git" },
+      { "<leader>u", group = "UI toggles" },
+      { "<leader>w", group = "Window" },
+      { "<leader>x", group = "Diagnostics" },
+      { "g", group = "Goto" },
+      { "gs", group = "Surround" },
+      { "z", group = "Fold" },
+      { "[", group = "Prev" },
+      { "]", group = "Next" },
+    },
+  },
+  keys = {
+    {
+      "<leader>?",
+      function()
+        require("which-key").show({ global = false })
+      end,
+      desc = "Buffer-local keymaps",
     },
   },
 }

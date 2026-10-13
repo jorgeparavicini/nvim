@@ -1,9 +1,13 @@
+-- Diagnostic display. Virtual text by default; <leader>uv switches to
+-- virtual lines (full-width message under the cursor line).
+
 vim.diagnostic.config({
-  virtual_text = { prefix = "●", source = "if_many" },
+  virtual_text = { prefix = "●", source = "if_many", spacing = 2 },
+  virtual_lines = false,
   severity_sort = true,
-  float = { border = "rounded", source = true },
   underline = true,
-  virtual_lines = { current_line = true },
+  update_in_insert = false,
+  float = { border = "rounded", source = true },
   signs = {
     text = {
       [vim.diagnostic.severity.ERROR] = "󰅚 ",
@@ -13,12 +17,3 @@ vim.diagnostic.config({
     },
   },
 })
-
-vim.keymap.set("n", "<leader>xl", function()
-  local cfg = vim.diagnostic.config()
-  if not cfg or cfg.virtual_lines == true then
-    vim.diagnostic.config({ virtual_lines = { current_line = true }, virtual_text = { prefix = "●" } })
-  else
-    vim.diagnostic.config({ virtual_lines = true, virtual_text = false })
-  end
-end, { desc = "Toggle diagnostic virtual lines" })

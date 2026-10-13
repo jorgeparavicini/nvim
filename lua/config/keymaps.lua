@@ -1,14 +1,94 @@
--- Your custom keybindings (leader = space).
+-- Global keymaps (leader = space).
+--
+-- Convention for <leader> prefixes. Plugin files register their own keys under
+-- the same prefixes, and which-key.lua names every group.
+--
+--   <leader>b  Buffer        <leader>q  Quit
+--   <leader>c  Code / LSP    <leader>r  Rust       (<leader>rc Cargo)
+--   <leader>f  Find files    <leader>s  Search     (grep, symbols, help, ...)
+--   <leader>g  Git           <leader>t  Terminal
+--   <leader>gh Git hunks     <leader>u  UI toggles
+--   <leader>w  Window        <leader>x  Diagnostics / lists
+--
+--   g*  goto (gd, gD, gI, gy, grr, grn, gra)     gs*  surround
+--   ]x / [x  next / prev x  (b buffer, d diag, e error, h hunk, q qf, t todo)
 
-vim.keymap.set(
-  "n",
-  "<Esc>",
-  "<cmd>nohlsearch<CR>",
-  { desc = "Clear highlights on search when pressing <Esc> in normal mode" }
-)
-vim.keymap.set("n", "<leader>w", "<cmd>write<CR>", { desc = "Save the current file" })
+local map = function(mode, lhs, rhs, desc, opts)
+  opts = opts or {}
+  opts.desc = desc
+  vim.keymap.set(mode, lhs, rhs, opts)
+end
 
-vim.keymap.set("n", "<C-h>", "<C-w>h", { desc = "Focus split window to the left" })
-vim.keymap.set("n", "<C-j>", "<C-w>j", { desc = "Focus split window to the bottom" })
-vim.keymap.set("n", "<C-k>", "<C-w>k", { desc = "Focus split window to the top" })
-vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "Focus split window to the right" })
+-- Save / quit --------------------------------------------------------------
+map({ "i", "x", "n", "s" }, "<C-s>", "<cmd>w<cr><esc>", "Save file")
+map("n", "<leader>qq", "<cmd>qa<cr>", "Quit all")
+map("n", "<leader>qQ", "<cmd>qa!<cr>", "Quit all (discard changes)")
+
+-- Windows -------------------------------------------------------------------
+map("n", "<C-h>", "<C-w>h", "Go to left window")
+map("n", "<C-j>", "<C-w>j", "Go to lower window")
+map("n", "<C-k>", "<C-w>k", "Go to upper window")
+map("n", "<C-l>", "<C-w>l", "Go to right window")
+map("n", "<C-Up>", "<cmd>resize +2<cr>", "Increase window height")
+map("n", "<C-Down>", "<cmd>resize -2<cr>", "Decrease window height")
+map("n", "<C-Left>", "<cmd>vertical resize -2<cr>", "Decrease window width")
+map("n", "<C-Right>", "<cmd>vertical resize +2<cr>", "Increase window width")
+map("n", "<leader>ww", "<C-w>p", "Other window")
+map("n", "<leader>wd", "<C-w>c", "Close window")
+map("n", "<leader>wo", "<C-w>o", "Close other windows")
+map("n", "<leader>w-", "<C-w>s", "Split below")
+map("n", "<leader>w|", "<C-w>v", "Split right")
+map("n", "<leader>w=", "<C-w>=", "Equalise windows")
+map("n", "<leader>-", "<C-w>s", "Split below")
+map("n", "<leader>|", "<C-w>v", "Split right")
+
+-- Buffers -------------------------------------------------------------------
+-- (bufferline.lua adds <S-h>/<S-l>, [b/]b, pin and close-others)
+map("n", "<leader>bb", "<cmd>e #<cr>", "Switch to last buffer")
+map("n", "<leader>`", "<cmd>e #<cr>", "Switch to last buffer")
+map("n", "<leader>bn", "<cmd>enew<cr>", "New empty buffer")
+map("n", "<leader>bD", "<cmd>bd<cr>", "Delete buffer and window")
+
+-- Editing -------------------------------------------------------------------
+map("n", "<Esc>", "<cmd>nohlsearch<cr>", "Clear search highlight")
+map("n", "<leader>ur", "<cmd>nohlsearch<bar>diffupdate<bar>normal! <C-L><cr>", "Redraw / clear highlight")
+map("n", "<A-j>", "<cmd>m .+1<cr>==", "Move line down")
+map("n", "<A-k>", "<cmd>m .-2<cr>==", "Move line up")
+map("i", "<A-j>", "<esc><cmd>m .+1<cr>==gi", "Move line down")
+map("i", "<A-k>", "<esc><cmd>m .-2<cr>==gi", "Move line up")
+map("v", "<A-j>", ":m '>+1<cr>gv=gv", "Move selection down")
+map("v", "<A-k>", ":m '<-2<cr>gv=gv", "Move selection up")
+map("v", "<", "<gv", "Indent left (keep selection)")
+map("v", ">", ">gv", "Indent right (keep selection)")
+map("n", "J", "mzJ`z", "Join lines (keep cursor)")
+map("n", "n", "nzzzv", "Next match (centred)")
+map("n", "N", "Nzzzv", "Prev match (centred)")
+map("n", "<C-d>", "<C-d>zz", "Half page down (centred)")
+map("n", "<C-u>", "<C-u>zz", "Half page up (centred)")
+map("x", "p", '"_dP', "Paste without yanking selection")
+-- Undo break-points so a long insert can be undone in sensible chunks.
+map("i", ",", ",<c-g>u", "")
+map("i", ".", ".<c-g>u", "")
+map("i", ";", ";<c-g>u", "")
+
+-- Diagnostics / lists --------------------------------------------------------
+local diag_jump = function(count, severity)
+  return function()
+    vim.diagnostic.jump({ count = count, float = true, severity = severity and vim.diagnostic.severity[severity] })
+  end
+end
+map("n", "]d", diag_jump(1), "Next diagnostic")
+map("n", "[d", diag_jump(-1), "Prev diagnostic")
+map("n", "]e", diag_jump(1, "ERROR"), "Next error")
+map("n", "[e", diag_jump(-1, "ERROR"), "Prev error")
+map("n", "]w", diag_jump(1, "WARN"), "Next warning")
+map("n", "[w", diag_jump(-1, "WARN"), "Prev warning")
+map("n", "]q", "<cmd>cnext<cr>", "Next quickfix item")
+map("n", "[q", "<cmd>cprev<cr>", "Prev quickfix item")
+
+-- Terminal ------------------------------------------------------------------
+map("t", "<Esc><Esc>", "<C-\\><C-n>", "Exit terminal mode")
+
+-- Misc ------------------------------------------------------------------------
+map("n", "<leader>l", "<cmd>Lazy<cr>", "Lazy (plugin manager)")
+map("n", "<leader>fn", "<cmd>enew<cr>", "New file")
