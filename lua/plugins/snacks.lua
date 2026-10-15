@@ -56,7 +56,7 @@ return {
       win = {
         input = {
           keys = {
-            ["<c-l>"] = { "toggle_preview", mode = { "i", "n" } },
+            ["<c-y>"] = { "toggle_preview", mode = { "i", "n" } },
             ["<c-e>"] = { "toggle_hidden", mode = { "i", "n" } },
             ["<c-x>"] = { "toggle_ignored", mode = { "i", "n" } },
             ["<c-z>"] = { "toggle_maximize", mode = { "i", "n" } },
@@ -65,7 +65,7 @@ return {
         },
         list = {
           keys = {
-            ["<c-l>"] = "toggle_preview",
+            ["<c-y>"] = "toggle_preview",
             ["<c-e>"] = "toggle_hidden",
             ["<c-x>"] = "toggle_ignored",
             ["<c-z>"] = "toggle_maximize",
