@@ -12,6 +12,10 @@ vim.o.laststatus = 3 -- one global statusline
 vim.o.showmode = false -- lualine shows the mode
 vim.o.winborder = "rounded" -- rounded border on all floating windows
 vim.o.pumblend = 10
+-- Terminal window title: "<project folder> > path/to/file [+]"
+vim.o.title = true
+vim.o.titlestring = "%{fnamemodify(getcwd(), ':t')} \u{203A} %f%( %M%)"
+vim.o.titlelen = 0
 vim.o.pumheight = 12
 vim.o.scrolloff = 8
 vim.o.sidescrolloff = 8
