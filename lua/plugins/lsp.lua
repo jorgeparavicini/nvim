@@ -104,6 +104,7 @@ return {
         "basedpyright", -- Python types
         "ruff", -- Python lint + format
         "csharp_ls", -- C# (needs the dotnet SDK)
+        "marksman", -- Markdown links, headings, diagnostics
       },
       automatic_enable = { exclude = { "rust_analyzer" } },
     })

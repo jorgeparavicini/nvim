@@ -27,6 +27,7 @@ return {
       neotest = true,
       noice = true,
       notify = true,
+      render_markdown = true,
       snacks = { enabled = true, indent_scope_color = "" },
       treesitter = true,
       treesitter_context = true,
