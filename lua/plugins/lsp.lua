@@ -88,6 +88,21 @@ return {
         map("<leader>cA", function()
           vim.lsp.buf.code_action({ context = { only = { "source" }, diagnostics = {} } })
         end, "Source action")
+        map("<leader>cq", function()
+          vim.lsp.buf.code_action({ context = { only = { "quickfix" } }, apply = true })
+        end, "Apply quick fix (no menu if only one)")
+        map("<leader>cD", function()
+          local line = vim.api.nvim_win_get_cursor(0)[1] - 1
+          for _, d in ipairs(vim.diagnostic.get(0, { lnum = line })) do
+            local lsp = d.user_data and d.user_data.lsp
+            local href = lsp and lsp.codeDescription and lsp.codeDescription.href
+            if href then
+              vim.ui.open(href)
+              return
+            end
+          end
+          vim.notify("No diagnostic with documentation link on this line", vim.log.levels.WARN)
+        end, "Open diagnostic documentation")
 
         if client and client:supports_method("textDocument/inlayHint") then
           vim.lsp.inlay_hint.enable(true, { bufnr = event.buf })
