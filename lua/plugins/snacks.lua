@@ -51,6 +51,28 @@ return {
       enabled = true,
       ui_select = true,
       sources = { explorer = { auto_close = false } },
+      -- Ctrl alternatives for the default Alt toggles (Alt belongs to AeroSpace).
+      -- The explorer additionally has P / H / I in normal mode for the same.
+      win = {
+        input = {
+          keys = {
+            ["<c-l>"] = { "toggle_preview", mode = { "i", "n" } },
+            ["<c-e>"] = { "toggle_hidden", mode = { "i", "n" } },
+            ["<c-x>"] = { "toggle_ignored", mode = { "i", "n" } },
+            ["<c-z>"] = { "toggle_maximize", mode = { "i", "n" } },
+            ["<c-o>"] = { "cycle_win", mode = { "i", "n" } },
+          },
+        },
+        list = {
+          keys = {
+            ["<c-l>"] = "toggle_preview",
+            ["<c-e>"] = "toggle_hidden",
+            ["<c-x>"] = "toggle_ignored",
+            ["<c-z>"] = "toggle_maximize",
+            ["<c-o>"] = "cycle_win",
+          },
+        },
+      },
     },
     quickfile = { enabled = true },
     scope = { enabled = true },
