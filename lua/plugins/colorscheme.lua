@@ -8,6 +8,26 @@ return {
   opts = {
     flavour = "mocha",
     background = { light = "latte", dark = "mocha" },
+    -- Let Ghostty's translucent, blurred background show through everywhere
+    -- (explorer, pickers, popups); only the completion menu stays solid.
+    transparent_background = true,
+    float = { transparent = true, solid = false },
+    custom_highlights = function()
+      local none = { bg = "NONE" }
+      return {
+        NormalSB = none,
+        SignColumnSB = none,
+        SnacksNormalNC = none,
+        SnacksPicker = none,
+        SnacksPickerBorder = none,
+        SnacksPickerInput = none,
+        SnacksPickerInputBorder = none,
+        WhichKey = none,
+        WhichKeyBorder = none,
+        TabLine = none,
+        TabLineFill = none,
+      }
+    end,
     term_colors = true,
     styles = {
       comments = { "italic" },
