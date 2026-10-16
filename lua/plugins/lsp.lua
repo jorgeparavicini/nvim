@@ -4,7 +4,14 @@
 return {
   "mason-org/mason-lspconfig.nvim",
   dependencies = {
-    { "mason-org/mason.nvim", opts = { ui = { border = "rounded" } } },
+    {
+      "mason-org/mason.nvim",
+      opts = {
+        ui = { border = "rounded" },
+        -- Crashdummyy registry ships the Roslyn C# server at the VS Code version.
+        registries = { "github:mason-org/mason-registry", "github:Crashdummyy/mason-registry" },
+      },
+    },
     "neovim/nvim-lspconfig",
     "saghen/blink.cmp",
     "b0o/SchemaStore.nvim",
@@ -118,7 +125,6 @@ return {
         "taplo", -- TOML (Cargo.toml etc.)
         "basedpyright", -- Python types
         "ruff", -- Python lint + format
-        "csharp_ls", -- C# (needs the dotnet SDK)
         "marksman", -- Markdown links, headings, diagnostics
       },
       automatic_enable = { exclude = { "rust_analyzer" } },
