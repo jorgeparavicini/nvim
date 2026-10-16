@@ -39,6 +39,8 @@ return {
       blink_cmp = { style = "bordered" },
       dap = true,
       dap_ui = true,
+      diffview = true,
+      octo = true,
       flash = true,
       gitsigns = true,
       lsp_trouble = true,
