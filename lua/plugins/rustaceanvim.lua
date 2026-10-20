@@ -5,7 +5,7 @@
 -- indexing a large workspace. Commands that need the server tell you so.
 --
 --   <leader>r   rust-analyzer actions (runnables, debug, macros, docs, ...)
---   <leader>t   tests via neotest (see neotest.lua)
+--   <leader>T   tests via neotest (see neotest.lua)
 --   Cargo.toml  crates.nvim keys under <leader>r (see crates.lua)
 
 return {

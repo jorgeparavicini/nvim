@@ -7,7 +7,8 @@
 --   <leader>c  Code / LSP    <leader>r  Rust       (crates in Cargo.toml)
 --   <leader>d  Debug
 --   <leader>f  Find files    <leader>s  Search     (grep, symbols, help, ...)
---   <leader>g  Git           <leader>t  Test       (terminal: <c-/>, <leader>ft)
+--   <leader>g  Git           <leader>t  Terminal   (<c-/> toggles, count picks which)
+--   <leader>T  Test
 --   <leader>gh Git hunks     <leader>u  UI toggles
 --   <leader>w  Window        <leader>x  Diagnostics / lists
 --
@@ -93,6 +94,10 @@ map("n", "[q", "<cmd>cprev<cr>", "Prev quickfix item")
 
 -- Terminal ------------------------------------------------------------------
 map("t", "<Esc><Esc>", "<C-\\><C-n>", "Exit terminal mode")
+map("t", "<C-h>", "<cmd>wincmd h<cr>", "Go to left window")
+map("t", "<C-j>", "<cmd>wincmd j<cr>", "Go to lower window")
+map("t", "<C-k>", "<cmd>wincmd k<cr>", "Go to upper window")
+map("t", "<C-l>", "<cmd>wincmd l<cr>", "Go to right window")
 
 -- Misc ------------------------------------------------------------------------
 map("n", "<leader>l", "<cmd>Lazy<cr>", "Lazy (plugin manager)")

@@ -428,13 +428,14 @@ return {
       desc = "Rename file",
     },
 
-    -- Terminal
+    -- Terminal (see <leader>t group). Terminals are numbered per directory;
+    -- <c-/> toggles the last one used, 2<c-/> the second, and so on.
     {
       "<c-/>",
       function()
         Snacks.terminal.toggle()
       end,
-      desc = "Toggle terminal",
+      desc = "Toggle terminal (count = which)",
       mode = { "n", "t" },
     },
     {
@@ -446,18 +447,53 @@ return {
       mode = { "n", "t" },
     },
     {
-      "<leader>ft",
+      "<leader>tt",
       function()
         Snacks.terminal.toggle()
       end,
-      desc = "Terminal (bottom)",
+      desc = "Toggle terminal (count = which)",
     },
     {
-      "<leader>fT",
+      "<leader>tn",
       function()
-        Snacks.terminal.toggle(nil, { win = { position = "float" } })
+        require("config.terminal").new("bottom")
       end,
-      desc = "Terminal (float)",
+      desc = "New terminal (bottom)",
+    },
+    {
+      "<leader>tv",
+      function()
+        require("config.terminal").new("right")
+      end,
+      desc = "New terminal (right)",
+    },
+    {
+      "<leader>tf",
+      function()
+        require("config.terminal").new("float")
+      end,
+      desc = "New terminal (float)",
+    },
+    {
+      "<leader>tl",
+      function()
+        require("config.terminal").pick()
+      end,
+      desc = "List / switch terminals",
+    },
+    {
+      "<leader>tk",
+      function()
+        require("config.terminal").kill()
+      end,
+      desc = "Kill current terminal",
+    },
+    {
+      "<leader>tr",
+      function()
+        require("config.terminal").run()
+      end,
+      desc = "Run command in new terminal",
     },
 
     -- Word references (LSP document highlight)
