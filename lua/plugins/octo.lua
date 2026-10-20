@@ -42,5 +42,10 @@ return {
     { "<leader>gR", "<cmd>Octo review submit<cr>", desc = "Review: submit" },
     { "<leader>gn", "<cmd>Octo notification list<cr>", desc = "GitHub notifications" },
     { "<leader>gO", "<cmd>Octo<cr>", desc = "Octo commands" },
+    -- GitHub Actions: pick a run, then o expands a step log, ]j/[j jobs,
+    -- ]s/[s steps, <C-r> refresh, <C-o> rerun, <C-f> rerun failed, <C-x> cancel.
+    { "<leader>ga", "<cmd>Octo run list<cr>", desc = "Actions: workflow runs" },
+    { "<leader>gA", "<cmd>Octo pr runs<cr>", desc = "Actions: runs for this PR (in PR buffer)" },
+    { "<leader>gW", "<cmd>Octo workflow list<cr>", desc = "Actions: workflow files" },
   },
 }
