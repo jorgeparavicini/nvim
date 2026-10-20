@@ -31,10 +31,34 @@ map("n", "<C-h>", "<C-w>h", "Go to left window")
 map("n", "<C-j>", "<C-w>j", "Go to lower window")
 map("n", "<C-k>", "<C-w>k", "Go to upper window")
 map("n", "<C-l>", "<C-w>l", "Go to right window")
-map("n", "<C-Up>", "<cmd>resize +2<cr>", "Increase window height")
-map("n", "<C-Down>", "<cmd>resize -2<cr>", "Decrease window height")
-map("n", "<C-Left>", "<cmd>vertical resize -2<cr>", "Decrease window width")
-map("n", "<C-Right>", "<cmd>vertical resize +2<cr>", "Increase window width")
+-- Resize mode: <leader>wr then h/j/k/l (shift = bigger steps), = equalise,
+-- any other key leaves. macOS owns Ctrl-arrows (Mission Control / Spaces),
+-- so those never reach the terminal.
+local function resize_mode()
+  local steps = {
+    h = "vertical resize -3",
+    l = "vertical resize +3",
+    j = "resize -2",
+    k = "resize +2",
+    H = "vertical resize -10",
+    L = "vertical resize +10",
+    J = "resize -6",
+    K = "resize +6",
+    ["="] = "wincmd =",
+  }
+  vim.api.nvim_echo({ { "RESIZE  h/j/k/l  (H/J/K/L big)  = equalise  Esc done", "ModeMsg" } }, false, {})
+  while true do
+    vim.cmd.redraw()
+    local ok, key = pcall(vim.fn.getcharstr)
+    local cmd = ok and steps[key]
+    if not cmd then
+      break
+    end
+    vim.cmd(cmd)
+  end
+  vim.api.nvim_echo({ { "" } }, false, {})
+end
+map("n", "<leader>wr", resize_mode, "Resize mode (h/j/k/l, Esc to finish)")
 map("n", "<leader>ww", "<C-w>p", "Other window")
 map("n", "<leader>wd", "<C-w>c", "Close window")
 map("n", "<leader>wo", "<C-w>o", "Close other windows")
