@@ -49,7 +49,9 @@ return {
             end
             t.buffer_selected = { fg = C.text, bg = C.surface1, style = { "bold" } }
             t.indicator_selected = { fg = C.blue, bg = C.surface1, style = { "bold" } }
-            t.separator_selected = { fg = C.surface1, bg = "NONE" }
+            t.separator_selected = { fg = C.surface1 }
+            t.separator = { fg = C.surface1 }
+            t.separator_visible = { fg = C.surface1 }
             return t
           end)(),
         },
@@ -74,7 +76,8 @@ return {
           return table.concat(parts, " ")
         end,
         always_show_bufferline = false,
-        separator_style = "slant",
+        separator_style = "thin",
+        indicator = { style = "icon", icon = "\u{258E} " },
         offsets = {
           { filetype = "snacks_layout_box" },
         },
