@@ -18,7 +18,42 @@ return {
   },
   opts = function()
     return {
-      highlights = require("catppuccin.special.bufferline").get_theme(),
+      -- With a transparent background catppuccin gives active and inactive
+      -- tabs the same (no) background, so the current one is invisible.
+      -- Give the selected tab a solid surface colour and a blue indicator.
+      highlights = require("catppuccin.special.bufferline").get_theme({
+        custom = {
+          all = (function()
+            local C = require("catppuccin.palettes").get_palette()
+            local sel = { bg = C.surface1 }
+            local names = {
+              "buffer",
+              "duplicate",
+              "modified",
+              "close_button",
+              "numbers",
+              "pick",
+              "error",
+              "warning",
+              "info",
+              "hint",
+              "error_diagnostic",
+              "warning_diagnostic",
+              "info_diagnostic",
+              "hint_diagnostic",
+              "diagnostic",
+            }
+            local t = {}
+            for _, n in ipairs(names) do
+              t[n .. "_selected"] = vim.deepcopy(sel)
+            end
+            t.buffer_selected = { fg = C.text, bg = C.surface1, style = { "bold" } }
+            t.indicator_selected = { fg = C.blue, bg = C.surface1, style = { "bold" } }
+            t.separator_selected = { fg = C.surface1, bg = "NONE" }
+            return t
+          end)(),
+        },
+      }),
       options = {
         close_command = function(n)
           Snacks.bufdelete(n)
