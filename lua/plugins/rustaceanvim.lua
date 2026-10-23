@@ -65,9 +65,18 @@ return {
         end
 
         -- Overrides of generic LSP keys with the Rust-aware versions.
-        rust({ "<leader>ca", "codeAction" }, "Code action (grouped)", { "n", "x" })
+        rust({ "<leader>ca", "codeAction" }, "Code action (grouped)")
         rust({ "K", { "hover", "actions" } }, "Hover + actions")
-        rust({ "<leader>K", { "hover", "range" } }, "Hover range", { "x" })
+        -- Visual-mode variants go through the command line so the selection
+        -- is passed as a range; rustaceanvim then offers range actions such
+        -- as "Extract into function".
+        vim.keymap.set(
+          "x",
+          "<leader>ca",
+          ":RustLsp codeAction<CR>",
+          { buffer = ev.buf, desc = "Code action (selection)" }
+        )
+        vim.keymap.set("x", "<leader>K", ":RustLsp hover range<CR>", { buffer = ev.buf, desc = "Hover range" })
 
         -- Run / debug / test
         rust({ "<leader>rr", "runnables" }, "Runnables (pick & run)")
