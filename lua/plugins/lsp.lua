@@ -62,8 +62,16 @@ return {
       group = vim.api.nvim_create_augroup("jorge_lsp_attach", { clear = true }),
       callback = function(event)
         local client = vim.lsp.get_client_by_id(event.data.client_id)
+        -- Skip keys a filetype hook already mapped for this buffer (e.g. the
+        -- Rust-specific <leader>ca from rustaceanvim.lua), so language
+        -- overrides win over these generic defaults.
         local map = function(keys, fn, desc, mode)
-          vim.keymap.set(mode or "n", keys, fn, { buffer = event.buf, desc = desc })
+          for _, m in ipairs(type(mode) == "table" and mode or { mode or "n" }) do
+            local existing = vim.fn.maparg(keys, m, false, true)
+            if not (existing.buffer == 1 and existing.lhs) then
+              vim.keymap.set(m, keys, fn, { buffer = event.buf, desc = desc })
+            end
+          end
         end
 
         -- Goto (Neovim's own defaults are grn/gra/grr/gri/grt; the g* ones
