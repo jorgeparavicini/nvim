@@ -82,6 +82,9 @@ return {
     words = { enabled = true },
     styles = {
       notification = { wo = { wrap = true } },
+      -- Base style for every floating snacks window (lazygit, float terminal,
+      -- ...). It has no border by default; `true` follows vim.o.winborder.
+      float = { border = true },
     },
   },
   keys = {

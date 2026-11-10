@@ -23,5 +23,8 @@ require("lazy").setup({
     { import = "plugins" },
   },
   install = { colorscheme = { "catppuccin" } },
+  -- lazy defaults to border = "none", which overrides vim.o.winborder; with
+  -- transparent floats that leaves the window edges invisible.
+  ui = { border = "rounded", title = " lazy.nvim ", title_pos = "center" },
   checker = { enabled = true },
 })
